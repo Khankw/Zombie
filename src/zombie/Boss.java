@@ -7,8 +7,21 @@ public class Boss extends Unit {
 	}
 
 	@Override
-	protected void attack(Unit unit) {
-
+	protected boolean attack(Unit unit) {
+		int attack = 0;
+		int atkType = ran.get(3);
+		String msg = "";
+		if (atkType < 2) {
+			attack = ran.get(power / 3, power);
+			msg += String.format("%s가 일반 공격을 합니다.\n", name);
+		} else {
+			attack = ran.get(power / 2, power * 2);
+			msg += String.format("%s가 강력한 공격을 합니다.\n", name);
+		}
+		unit.takeDamage(attack);
+		msg += String.format("%s가 %s에게 %d의 피해를 입혔습니다.", name, unit.getName(), attack);
+		System.out.println(msg);
+		return unit.isDead();
 	}
 
 	@Override
@@ -21,9 +34,11 @@ public class Boss extends Unit {
 	}
 
 	@Override
-	protected boolean isDie() {
+	protected boolean isDead() {
 		if (hp == 0) {
+			System.out.println("☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆");
 			System.out.println(name + "을 쓰러트렸습니다!\n다음스테이지로 이동합니다.");
+			System.out.println("☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆");
 			return true;
 		}
 		return false;
