@@ -193,7 +193,6 @@ public class ZombieGame {
 					hero.addPotion();
 			}
 		}
-
 		return isDead;
 	}
 
