@@ -8,14 +8,25 @@ public class Boss extends Unit {
 
 	@Override
 	protected void attack(Unit unit) {
-		// TODO Auto-generated method stub
-		
+
 	}
 
 	@Override
-	protected void move() {
-		// TODO Auto-generated method stub
-		
+	protected void move(int start, int end) {
+		int newPos = pos + ran.get(-1, 1);
+		if (newPos < start)
+			return;
+
+		pos = newPos;
+	}
+
+	@Override
+	protected boolean isDie() {
+		if (hp == 0) {
+			System.out.println(name + "을 쓰러트렸습니다!\n다음스테이지로 이동합니다.");
+			return true;
+		}
+		return false;
 	}
 
 }

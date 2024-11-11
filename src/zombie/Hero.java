@@ -14,23 +14,40 @@ public class Hero extends Unit {
 		if (hp > maxHp)
 			hp = maxHp;
 	}
-	
-	
-	
+
+	public void reset() {
+		pos = 0;
+	}
+
 	public void addPotion() {
-		if(potion<MAX_POTION)
+		if (potion < MAX_POTION)
 			potion++;
 	}
-	
+
 	public int getPotion() {
 		return potion;
 	}
 
 	@Override
 	public void attack(Unit unit) {
+		
 	}
 
 	@Override
-	public void move() {
+	public void move(int start, int end) {
+		pos++;
+		if (pos > end)
+			pos = end;
+
+		System.out.println(pos);
+	}
+
+	@Override
+	protected boolean isDie() {
+		if (hp == 0) {
+			System.out.println(name + "이 사망했습니다...†\n클리어 실패.");
+			return true;
+		}
+		return false;
 	}
 }
