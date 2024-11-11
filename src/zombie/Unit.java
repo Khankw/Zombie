@@ -17,14 +17,21 @@ public abstract class Unit {
 		this.hp = hp;
 		this.power = power;
 		this.pos = pos;
-		System.out.println(name + " 생성!");
 	}
 
-	protected abstract void attack(Unit unit);
+	protected abstract boolean attack(Unit unit);
 
 	protected abstract void move(int start, int end);
 
-	protected abstract boolean isDie();
+	protected abstract boolean isDead();
+
+	protected String getName() {
+		return name;
+	}
+
+	public String getSymbol() {
+		return symbol;
+	}
 
 	protected int getHp() {
 		return hp;
@@ -33,8 +40,15 @@ public abstract class Unit {
 	protected int getPos() {
 		return pos;
 	}
-	
-	public String getSymbol() {
-		return symbol;
+
+	protected void takeDamage(int damage) {
+		hp -= damage;
+		if (hp < 0)
+			hp = 0;
+	}
+
+	@Override
+	public String toString() {
+		return String.format("%s[%d/%d]", name, hp, maxHp);
 	}
 }
