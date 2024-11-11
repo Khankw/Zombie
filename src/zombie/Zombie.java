@@ -7,8 +7,20 @@ public class Zombie extends Unit {
 	}
 
 	@Override
-	protected void attack(Unit unit) {
-
+	protected boolean attack(Unit unit) {
+		int min = power / 10;
+		if (min == 0)
+			min = 1;
+		int attack = ran.get(min, power);
+		unit.takeDamage(attack);
+		int heal = attack / 3;
+		if (heal == 0)
+			heal = 1;
+		hp += heal;
+		String msg = String.format("%s가 %s에게 %d의 피해를 입혔습니다.\n", name, unit.getName(), attack);
+		msg += String.format("%s는 %s의 피를 먹고 %d의 체력을 회복했습니다.", name, unit.getName(), heal);
+		System.out.println(msg);
+		return unit.isDead();
 	}
 
 	@Override
@@ -21,9 +33,11 @@ public class Zombie extends Unit {
 	}
 
 	@Override
-	protected boolean isDie() {
+	protected boolean isDead() {
 		if (hp == 0) {
+			System.out.println("☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆");
 			System.out.println(name + "를 쓰러트렸습니다.");
+			System.out.println("☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆☆");
 			return true;
 		}
 		return false;
