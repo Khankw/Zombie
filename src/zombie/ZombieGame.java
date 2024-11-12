@@ -11,7 +11,9 @@ public class ZombieGame {
 	private final int MOVE = 1;
 	private final int EXIT = 0;
 	private final int ATTACK = 1;
-	private final int POTION = 2;
+	private final int SPECIAL = 2;
+	private final int AVOID = 3;
+	private final int POTION = 4;
 
 	private final int MAP_SIZE = 40;
 
@@ -70,8 +72,7 @@ public class ZombieGame {
 	private void upgrade() {
 		int point = stage;
 		while (point > 0) {
-			System.out.println("UPGRADE >>>>");
-			hero.showStatus();
+			hero.showUpgrade();
 			System.out.println("남은 포인트 : " + point);
 			int sel = inputNum("업그레이드 선택");
 
@@ -88,10 +89,9 @@ public class ZombieGame {
 				acc = 1;
 				point--;
 			}
-
 			hero.upgrade(hp, pow, acc);
 		}
-		hero.showStatus();
+		hero.showUpgrade();
 	}
 
 	private void printMap() {
@@ -116,7 +116,7 @@ public class ZombieGame {
 			map += unitsStr.get(i);
 
 		map += "\n▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n";
-		map += "Status : " + hero;
+		map += hero + "\n" + hero.getGuageToString();
 		System.out.println(map);
 	}
 
@@ -142,6 +142,7 @@ public class ZombieGame {
 	private void action() {
 		int heroPos = hero.getPos();
 		Unit enemy = units.get(1);
+		boolean isFallDown = false;
 
 		if (enemy.getPos() != heroPos + 1)
 			return;
@@ -149,35 +150,54 @@ public class ZombieGame {
 		printMap();
 		while (true) {
 			printBattle(enemy);
-			int sel = inputNum("[1]공격하기 [2]물약먹기");
+			int sel = inputNum("[1]공격하기 [2]필살기  [3]회피하기 [4]물약먹기");
 
-			if (sel == ATTACK) {
+			if (sel == ATTACK || sel == SPECIAL) {
+				if (sel == SPECIAL && hero.getSpecialGuage() != 10) {
+					System.out.println("스페셜게이지가 모자릅니다.");
+					continue;
+				} else if (sel == SPECIAL)
+					hero.activeSpecial();
+
 				int ranOrder = ran.get(2);
 				if (ranOrder == 0) {// 공격순서 랜덤
-					if (attack(hero, enemy) || attack(enemy, hero))
+					if (attack(hero, enemy) || (!isFallDown && attack(enemy, hero)))
 						return;
 				} else {
-					if (attack(enemy, hero) || attack(hero, enemy))
+					if ((!isFallDown && attack(enemy, hero)) || attack(hero, enemy))
 						return;
 				}
-
+			} else if (sel == AVOID) {
+				int ranAvoid = ran.get(3);
+				if (ranAvoid == 0) {
+					System.out.println("회피를 실패했습니다");
+					if (!isFallDown && attack(enemy, hero))
+						return;
+				} else {
+					System.out.println("회피를 성공했습니다");
+					System.out.println(enemy.getName() + "가 쓰러져 다음턴에 공격을 못 합니다.");
+					isFallDown = true;
+					continue;
+				}
 			} else if (sel == POTION) {
 				if (hero.getPotion() == 0) {
 					System.out.println("물약이 없습니다.");
 					continue;
 				}
 				hero.recovery();
-				if (attack(enemy, hero))
+				if (!isFallDown && attack(enemy, hero))
 					return;
 			}
+			isFallDown = false;
 		}
 	}
 
 	private void printBattle(Unit enemy) {
 		String msg = String.format("\nBATTLE - %s VS %s\n", hero.getName(), enemy.getName());
 		msg += "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n";
-		msg += String.format(" %-17s%17s \n", hero, enemy);
-		msg += "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒";
+		msg += String.format("%-18s%15s\n", hero, enemy);
+		msg += hero.getGuageToString();
+		msg += "\n▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒";
 		System.out.println(msg);
 	}
 
