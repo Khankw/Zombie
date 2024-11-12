@@ -49,6 +49,6 @@ public abstract class Unit {
 
 	@Override
 	public String toString() {
-		return String.format("%s[%d/%d]", name, hp, maxHp);
+		return String.format("%s HP[%d/%d]", name, hp, maxHp);
 	}
 }
