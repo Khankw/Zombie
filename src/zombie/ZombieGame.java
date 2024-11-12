@@ -114,7 +114,6 @@ public class ZombieGame {
 		}
 		for (int i = 0; i < MAP_SIZE; i++)
 			map += unitsStr.get(i);
-
 		map += "\n▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n";
 		map += hero + "\n" + hero.getGuageToString();
 		System.out.println(map);
