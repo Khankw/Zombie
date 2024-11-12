@@ -122,7 +122,7 @@ public class ZombieGame {
 		for (int i = 0; i < MAP_SIZE; i++)
 			map += unitsStr.get(i);
 		map += "\n▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n";
-		map += hero + "\n" + hero.getGuageToString();
+		map += hero + "\n" + hero.guageToString();
 		System.out.println(map);
 	}
 
@@ -202,7 +202,7 @@ public class ZombieGame {
 		String msg = String.format("\nSTAGE %d : BATTLE - %s VS %s\n", stage, hero.getName(), enemy.getName());
 		msg += "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n";
 		msg += String.format("%-18s%15s\n", hero, enemy);
-		msg += hero.getGuageToString();
+		msg += hero.guageToString();
 		msg += "\n▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒";
 		System.out.println(msg);
 	}

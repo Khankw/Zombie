@@ -57,7 +57,7 @@ public class Hero extends Unit {
 		this.accuracy += accuracy;
 	}
 
-	public String getGuageToString() {
+	public String guageToString() {
 		String msg = "SPECIAL[";
 		if (specialGuage == 10)
 			msg += "■■■■■■■■■■";
