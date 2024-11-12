@@ -10,6 +10,7 @@ public class ZombieGame {
 	private final int ACC = 3;
 	private final int MOVE = 1;
 	private final int EXIT = 0;
+	private final int CONTINUE = 1;
 	private final int ATTACK = 1;
 	private final int SPECIAL = 2;
 	private final int AVOID = 3;
@@ -37,8 +38,7 @@ public class ZombieGame {
 	}
 
 	public void run() {
-		hero = new Hero();
-		units.add(hero);
+		initGame();
 		while (isRun) {
 			if (units.size() == 1)
 				setStage();
@@ -49,9 +49,16 @@ public class ZombieGame {
 				play();
 			else if (sel == EXIT) {
 				System.out.println("게임 종료.");
-				break;
+				isRun = false;
 			}
 		}
+	}
+
+	private void initGame() {
+		units.clear();
+		hero = new Hero();
+		units.add(hero);
+		stage = 0;
 	}
 
 	private void setStage() {
@@ -192,7 +199,7 @@ public class ZombieGame {
 	}
 
 	private void printBattle(Unit enemy) {
-		String msg = String.format("\nBATTLE - %s VS %s\n", hero.getName(), enemy.getName());
+		String msg = String.format("\nSTAGE %d : BATTLE - %s VS %s\n", stage, hero.getName(), enemy.getName());
 		msg += "▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒▒\n";
 		msg += String.format("%-18s%15s\n", hero, enemy);
 		msg += hero.getGuageToString();
@@ -203,9 +210,10 @@ public class ZombieGame {
 	private boolean attack(Unit attacker, Unit target) {
 		boolean isDead = attacker.attack(target);
 		if (isDead) {
-			if (target instanceof Hero)
-				isRun = false;
-			else {
+			if (target instanceof Hero) {
+				selectContinue();
+
+			} else {
 				units.remove(target);
 				int item = ran.get(2);
 				if (item == 0)
@@ -213,6 +221,21 @@ public class ZombieGame {
 			}
 		}
 		return isDead;
+	}
+
+	private void selectContinue() {
+		int sel = 2;
+		while (sel != CONTINUE && sel != EXIT) {
+			sel = inputNum("[1]처음부터 다시하기 [0]종료");
+
+			if (sel == CONTINUE) {
+				System.out.println("게임 재시작....");
+				initGame();
+			} else if (sel == EXIT) {
+				System.out.println("게임 오버");
+				isRun = false;
+			}
+		}
 	}
 
 	private int inputNum(String msg) {
