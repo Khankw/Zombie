@@ -25,7 +25,7 @@ public abstract class Unit {
 
 	protected abstract boolean isDead();
 
-	protected String getName() {
+	public String getName() {
 		return name;
 	}
 
@@ -33,15 +33,15 @@ public abstract class Unit {
 		return symbol;
 	}
 
-	protected int getHp() {
+	public int getHp() {
 		return hp;
 	}
 
-	protected int getPos() {
+	public int getPos() {
 		return pos;
 	}
 
-	protected void takeDamage(int damage) {
+	public void takeDamage(int damage) {
 		hp -= damage;
 		if (hp < 0)
 			hp = 0;
