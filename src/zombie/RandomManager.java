@@ -14,8 +14,8 @@ public class RandomManager {
 		return instance;
 	}
 
-	public int get(int langth) {
-		return ran.nextInt(langth);
+	public int get(int length) {
+		return ran.nextInt(length);
 	}
 
 	public int get(int start, int end) {
